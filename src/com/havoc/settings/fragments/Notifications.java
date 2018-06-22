@@ -47,7 +47,7 @@ import com.android.settings.SettingsPreferenceFragment;
 import com.android.internal.logging.nano.MetricsProto;
 
 import com.havoc.settings.preferences.Utils;
-import com.havoc.settings.preferences.SystemSettingSwitchPreference;
+import com.havoc.settings.preferences.SecureSettingSwitchPreference;
 
 public class Notifications extends SettingsPreferenceFragment
     implements OnPreferenceChangeListener {
@@ -56,9 +56,11 @@ public class Notifications extends SettingsPreferenceFragment
 
     private static final String INCALL_VIB_OPTIONS = "incall_vib_options";
     private static final String DISABLE_IMMERSIVE_MESSAGE = "disable_immersive_message"; 
+    private static final String DISABLE_FC_DIALOG = "disable_fc_notifications"; 
     private static final String FLASHLIGHT_ON_CALL = "flashlight_on_call";
 
     private SwitchPreference mDisableIM; 
+    private SecureSettingSwitchPreference mDisableFCD; 
     private ListPreference mFlashlightOnCall;
 
     @Override
@@ -80,6 +82,12 @@ public class Notifications extends SettingsPreferenceFragment
         int DisableIM = Settings.System.getInt(getContentResolver(), 
                 DISABLE_IMMERSIVE_MESSAGE, 0); 
         mDisableIM.setChecked(DisableIM != 0); 
+        
+        mDisableFCD = (SecureSettingSwitchPreference) findPreference(DISABLE_FC_DIALOG); 
+        mDisableFCD.setOnPreferenceChangeListener(this); 
+        int DisableFCD = Settings.Secure.getInt(getContentResolver(), 
+            DISABLE_FC_NOTIFICATIONS, 0); 
+        mDisableFCD.setChecked(DisableFCD != 0); 
 
         
         mFlashlightOnCall = (ListPreference) findPreference(FLASHLIGHT_ON_CALL);
